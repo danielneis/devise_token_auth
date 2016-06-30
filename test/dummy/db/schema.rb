@@ -44,6 +44,26 @@ ActiveRecord::Schema.define(version: 20150708104536) do
   add_index "evil_users", ["reset_password_token"], name: "index_evil_users_on_reset_password_token", unique: true
   add_index "evil_users", ["uid", "provider"], name: "index_evil_users_on_uid_and_provider", unique: true
 
+  create_table "lockable_users", force: :cascade do |t|
+    t.string   "provider",                        null: false
+    t.string   "uid",                default: "", null: false
+    t.string   "encrypted_password", default: "", null: false
+    t.integer  "failed_attempts",    default: 0,  null: false
+    t.string   "unlock_token"
+    t.datetime "locked_at"
+    t.string   "name"
+    t.string   "nickname"
+    t.string   "image"
+    t.string   "email"
+    t.text     "tokens"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "lockable_users", ["email"], name: "index_lockable_users_on_email"
+  add_index "lockable_users", ["uid", "provider"], name: "index_lockable_users_on_uid_and_provider", unique: true
+  add_index "lockable_users", ["unlock_token"], name: "index_lockable_users_on_unlock_token", unique: true
+
   create_table "mangs", force: :cascade do |t|
     t.string   "email",                       limit: 255
     t.string   "encrypted_password",          limit: 255,   default: "", null: false
